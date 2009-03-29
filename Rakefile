@@ -24,8 +24,8 @@ PROJ.email = 'joseph@inventivelabs.com.au'
 PROJ.url = 'http://inventivelabs.com.au'
 PROJ.version = Billygen::VERSION
 
-PROJ.history_file => "HISTORY.md"
-PROJ.readme_file => "README.md"
+PROJ.history_file = "HISTORY.md"
+PROJ.readme_file = "README.md"
 PROJ.ignore_file = '.gitignore'
 
 # EOF

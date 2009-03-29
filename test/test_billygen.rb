@@ -9,7 +9,7 @@ class BillygenGeneratorTest < Test::Unit::TestCase
 
   def test_run
     require 'pkg/billygen-1.0.0/lib/billygen.rb'
-    files = ["README.txt", 'lib/**/*.rb'].collect{|glob| Dir.glob(glob)}.flatten
+    files = ['README.md', 'HISTORY.md', 'lib/**/*.rb']
     Billygen.run('Billygen', 'doc', files)
     assert File.exists?('doc/rdocdump.yml')
   end

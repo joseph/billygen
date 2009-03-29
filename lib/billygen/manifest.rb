@@ -20,4 +20,9 @@ class Billygen::Manifest
     Billygen::CodeObjects::BCodeObject.complete_store = @data
   end
 
+
+  def method_missing(mthd, *args)
+    @data[mthd.to_s] ?  @data[mthd.to_s] : super
+  end
+
 end
