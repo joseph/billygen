@@ -22,7 +22,7 @@ class Billygen::Manifest
 
 
   def method_missing(mthd, *args)
-    @data[mthd.to_s] ?  @data[mthd.to_s] : super
+    data[mthd.to_s] ? data[mthd.to_s] : super
   end
 
 end

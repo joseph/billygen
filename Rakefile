@@ -23,6 +23,7 @@ PROJ.authors = 'Joseph Pearson'
 PROJ.email = 'joseph@inventivelabs.com.au'
 PROJ.url = 'http://inventivelabs.com.au'
 PROJ.version = Billygen::VERSION
+PROJ.summary = "Billygen collates the data that RDoc generates and dumps it to a readable transport format (YAML, XML, etc)"
 
 PROJ.history_file = "HISTORY.md"
 PROJ.readme_file = "README.md"

@@ -1,6 +1,7 @@
 module Billygen::CodeObjects
 
-  # CODE OBJECT
+  # This is the superclass of any given code artifact, from a file to a class
+  # to a method to a 'require' statement & etc.
   class BCodeObject
 
     attr_accessor :bid
@@ -12,7 +13,7 @@ module Billygen::CodeObjects
     end
 
 
-    # WARNING: this will invalidate any existing codeobjects
+    # WARNING: setting this will invalidate any existing codeobjects
     def self.complete_store=(val)
       @@complete_store = val
     end
@@ -63,7 +64,7 @@ module Billygen::CodeObjects
 
     def parent
       return nil unless @parent_id && @parent_collection
-      return nil if @parent_id == bid
+      return nil if @parent_id == bid && @parent_collection == self.class.key
       return nil if @parent_collection == "files"
       self.class.complete_store[@parent_collection][@parent_id]
     end
@@ -71,22 +72,20 @@ module Billygen::CodeObjects
   end
 
 
-  # SECTION
+  # A section is a whole or part of a file that contains code and comments.
+  # It's probably not as useful as it sounds.
   class BSection < BCodeObject
 
     def self.key
       'sections'
     end
 
-
-    def process(src)
-      super
-    end
-
   end
 
 
-  # CONTEXT
+  # Entirely analogous to the RDoc concept of a 'context', BContext represents
+  # a thing that can contain any kind of code. Files, classes and modules in
+  # Ruby are all 'contexts'.
   class BContext < BCodeObject
 
     attr_reader :name
@@ -131,7 +130,7 @@ module Billygen::CodeObjects
   end
 
 
-  # FILE
+  # Represents a source file, or a text file (such as a README) found by RDoc.
   class BFile < BContext
 
     attr_reader :format, :last_modified, :absolute_name, :full_name
@@ -142,6 +141,8 @@ module Billygen::CodeObjects
     end
 
 
+    # In addition to standard BContext processing, this detects the file
+    # format based on the parser class.
     def process(src)
       super
       @format = case src.parser.to_s
@@ -160,12 +161,92 @@ module Billygen::CodeObjects
       @full_name = src.full_name
     end
 
+
+    # Outputter returns information on the renderer that should be used to 
+    # transform the comment into HTML. If the result is +:rdoc+, then 
+    # the file's +description+ should be used. Otherwise, operate directly
+    # on the comment.
+    #
+    # If the file is a source file (ie, contains active code), this always 
+    # returns +:rdoc+.
+    #
+    # The formats here should mirror Github's detection of README formats.
+    # However, formats treated by Github as 'no formatting' are here considered
+    # to be +:rdoc+.
+    # See: http://github.com/guides/readme-formatting
+    #
+    # Currently, the possible outputter values are:
+    # - +:rdoc+
+    # - +:markdown+
+    # - +:textile+
+    # - +:png+
+    # - +:restructured_text+
+    #
+    def outputter
+      return @outputter ||= :rdoc unless format == 'text'
+
+      @outputter ||= case File.extname(full_name)
+        when '.textile'
+          :textile
+        when '.png'
+          :png
+        when '.rst'
+          :restructured_text
+        when *['.md', '.markdown', '.mdown', '.mkd', '.mkdn']
+          :markdown
+        else
+          :rdoc
+      end
+    end
+
+
+    # Returns a nested hash of arrays of files, in the form of a tree.
+    # 
+    # Files are stored under directory keys in the '.' key. For example,
+    # this directory structure:
+    #
+    #     README.md
+    #     lib/
+    #       billygen.rb
+    #       billygen/
+    #         code_objects.rb
+    #         generator.rb
+    #         manifest.rb
+    #
+    # ... will generate this hash:
+    #   
+    #     {
+    #       "." => ["README.md"],
+    #       "lib" => {
+    #         "." => ["billygen.rb"],
+    #         "billygen" => {
+    #           "." => ["code_objects.rb", "generator.rb", "manifest.rb"]
+    #         }
+    #       }
+    #     }
+    #
+    # ... where the filenames in the hash above are actually BFile objects.
+    #
+    def self.tree
+      t = {}
+      store.each do |file|
+        file_dirs = file.full_name.split(File::SEPARATOR)
+        file_dirs.pop
+        branch = t
+        file_dirs.each { |dir| branch = (branch[dir] ||= {}) }
+        branch['.'] ||= []
+        branch['.'] << file
+      end
+      t
+    end
+
   end
 
 
   # MODULE
   class BModule < BContext
 
+    # Returns 'modules'.
     def self.key
       'modules'
     end
@@ -185,8 +266,8 @@ module Billygen::CodeObjects
       super
       if src.superclass
         if src.superclass.is_a?(String)
-          @superclass_id = src.superclass.to_s
-        #if src.superclass.kind_of?(RDoc::CodeObject)
+          puts "String superclass for #{self.long_name}: #{src.superclass}"
+          @superclass_id = src.superclass
         else
           @superclass_id = BClass.find_or_create(src.superclass).bid
         end
@@ -196,12 +277,27 @@ module Billygen::CodeObjects
 
     def superclass
       if @superclass_id == bid
+        # Not sure how you can be a subclass of yourself?
         nil
       elsif @superclass_id.is_a?(String)
-        @superclass_id
+        # Yeah this is a hack. It gets around an RDoc bug, where it fails to
+        # provide a superclass object if it's in the same file as this class --
+        # giving just a name instead.
+        #
+        # Of course this workaround is imperfect, because the RDoc superclass
+        # name is not fully qualified. So if you have a class called
+        # Billygen::Object for example, then all subclasses of Ruby's core 
+        # Object class will be considered a subclass of that class instead. Ugh.
+        BClass.store.find {|klass| klass.name == @superclass_id} ||
+          @superclass_id
       else
         BClass.store[@superclass_id]
       end
+    end
+
+
+    def subclasses
+      BClass.store.select {|klass| klass.superclass == self}
     end
 
   end
