@@ -10,7 +10,8 @@ class Billygen::Manifest
       :files => options.files,
       :line_numbers => options.include_line_numbers,
       :charset => options.charset,
-      :tab_width => options.tab_width
+      :tab_width => options.tab_width,
+      :version => Billygen::VERSION
     }
     @data = Billygen::CodeObjects::BCodeObject.complete_store
   end
