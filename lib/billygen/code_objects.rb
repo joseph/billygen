@@ -24,6 +24,11 @@ module Billygen::CodeObjects
     end
 
 
+    def self.store_by_slug(slug)
+      store.find {|x| x.respond_to?(:slug) && x.slug == slug }
+    end
+
+
     def self.find_or_create(rdoc_code_object)
       result = nil
       if i = rdoc_code_object.bid
@@ -69,6 +74,12 @@ module Billygen::CodeObjects
       self.class.complete_store[@parent_collection][@parent_id]
     end
 
+
+    def slug
+      return nil unless @slug_source
+      @slug_source.downcase.gsub(/[\W_]+/, '-')
+    end
+
   end
 
 
@@ -106,6 +117,8 @@ module Billygen::CodeObjects
       @constant_ids = bids(BConstant, src.constants)
       @include_ids = bids(BInclude, src.includes)
       @require_ids = bids(BRequire, src.requires)
+
+      @slug_source = long_name
     end
 
 
@@ -411,11 +424,18 @@ module Billygen::CodeObjects
       @name = src.name if src.respond_to?(:name)
       @section_id = BSection.find_or_create(src.section).bid
       #@path = src.path
+
+      @slug_source = long_name
     end
 
 
     def section
       BSection.store[@section_id]
+    end
+
+
+    def long_name
+      parent ? "#{parent.long_name}##{name}" : name
     end
 
   end
@@ -453,6 +473,12 @@ module Billygen::CodeObjects
       (type == "class" ? "self." : "") + name + params
     end
 
+
+    def long_name
+      divider = (type == "class" ? "." : "#")
+      parent ? "#{parent.long_name}#{divider}#{name}" : name
+    end
+
   end
 
   
@@ -471,6 +497,11 @@ module Billygen::CodeObjects
       super
       @aliased_name = src.new_name
       @aliasee_name = src.old_name
+    end
+
+
+    def long_name
+      parent ? "#{parent.long_name}##{aliased_name}" : aliased_name
     end
 
   end
