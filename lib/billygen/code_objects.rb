@@ -109,22 +109,81 @@ module Billygen::CodeObjects
     end
 
 
-    def section; BSection.store[@section_id]; end
+    # If this module or class is within another module/class, returns that name.
+    def namespace
+      parent && !parent.is_a?(BFile) ? parent.long_name : nil
+    end
 
 
-    def files; @file_ids.collect { |idx| BFile.store[idx] }; end
-    def sections; @section_ids.collect { |idx| BSection.store[idx] }; end
-    def modules; @module_ids.collect { |idx| BModule.store[idx] }; end
-    def classes; @class_ids.collect { |idx| BClass.store[idx] }; end
-    def methods; @method_ids.collect { |idx| BMethod.store[idx] }; end
-    def attributes; @attribute_ids.collect { |idx| BAttribute.store[idx] }; end
-    def aliases; @alias_ids.collect { |idx| BAlias.store[idx] }; end
-    def constants; @constant_ids.collect { |idx| BConstant.store[idx] }; end
-    def includes; @include_ids.collect { |idx| BInclude.store[idx] }; end
-    def requires; @require_ids.collect { |idx| BRequire.store[idx] }; end
-
+    # The fully-qualified name of this module or class.
     def long_name
-      parent && !parent.is_a?(BFile) ? "#{parent.long_name}::#{name}" : name
+      namespace ? "#{namespace}::#{name}" : name
+    end
+
+
+    # The section in which this context is found.
+    def section
+      BSection.store[@section_id]
+    end
+
+
+    # The files in which this context exists. Not always just one file?
+    def files
+      @file_ids.collect { |idx| BFile.store[idx] }
+    end
+
+
+    # The sections this context contains.
+    def sections
+      @section_ids.collect { |idx| BSection.store[idx] }
+    end
+    
+
+    # All the modules defined or re-opened in this context.
+    def modules
+      @module_ids.collect { |idx| BModule.store[idx] }
+    end
+
+
+    # All the classes defined or re-opened in this context.
+    def classes
+      @class_ids.collect { |idx| BClass.store[idx] }
+    end
+
+
+    # The methods defined in this context.
+    def methods
+      @method_ids.collect { |idx| BMethod.store[idx] }
+    end
+
+
+    # If this context is a class, the attributes of this class.
+    def attributes
+      @attribute_ids.collect { |idx| BAttribute.store[idx] }
+    end
+
+
+    # Method aliases defined in this context.
+    def aliases
+      @alias_ids.collect { |idx| BAlias.store[idx] }
+    end
+
+
+    # Constants defined in this context.
+    def constants
+      @constant_ids.collect { |idx| BConstant.store[idx] }
+    end
+
+
+    # Modules included in this module or class.
+    def includes
+      @include_ids.collect { |idx| BInclude.store[idx] }
+    end
+
+
+    # Source files for which a 'require' statement is found in this context.
+    def requires
+      @require_ids.collect { |idx| BRequire.store[idx] }
     end
 
   end
@@ -265,42 +324,81 @@ module Billygen::CodeObjects
     def process(src)
       super
       if src.superclass
-        if src.superclass.is_a?(String)
-          puts "String superclass for #{self.long_name}: #{src.superclass}"
-          @superclass_id = src.superclass
-        else
-          @superclass_id = BClass.find_or_create(src.superclass).bid
-        end
+        factory = src.superclass.is_a?(String) ? BExternalClass : BClass
+        @superclass_id = factory.find_or_create(src.superclass).bid
       end
     end
 
 
     def superclass
-      if @superclass_id == bid
-        # Not sure how you can be a subclass of yourself?
-        nil
-      elsif @superclass_id.is_a?(String)
-        # Yeah this is a hack. It gets around an RDoc bug, where it fails to
-        # provide a superclass object if it's in the same file as this class --
-        # giving just a name instead.
-        #
-        # Of course this workaround is imperfect, because the RDoc superclass
-        # name is not fully qualified. So if you have a class called
-        # Billygen::Object for example, then all subclasses of Ruby's core 
-        # Object class will be considered a subclass of that class instead. Ugh.
-        BClass.store.find {|klass| klass.name == @superclass_id} ||
-          @superclass_id
-      else
-        BClass.store[@superclass_id]
-      end
+      return nil unless @superclass_id
+      return nil if @superclass_id == bid
+      self.class.store[@superclass_id]
     end
 
 
     def subclasses
-      BClass.store.select {|klass| klass.superclass == self}
+      BClass.store.select { |klass| klass.superclass == self }
+    end
+
+
+    def external?
+      false
+    end
+
+
+    def top_level?
+      !superclass
     end
 
   end
+
+  # RDoc gives a string if a superclass object isn't found in the source.
+  # This usually means the superclass is in an external library. For API 
+  # neatness, we transform this string into a stub object that behaves like
+  # a top-level class object.
+  class BExternalClass < BClass
+    
+    def self.find_or_create(str)
+      result = nil
+      unless result = self.store.detect { |klass| klass.name == str }
+        result = self.new
+        self.store << result
+        i = self.store.index(result)
+        result.bid = i
+        result.process(str)
+      end
+      result
+    end
+
+
+    def process(str)
+      @name = str
+
+      @file_ids = []
+      @section_ids = []
+      @module_ids = []
+      @class_ids = []
+      @method_ids = []
+      @attribute_ids = []
+      @alias_ids = []
+      @constant_ids = []
+      @include_ids = []
+      @require_ids = []
+    end
+
+
+    def superclass
+      nil
+    end
+
+
+    def external?
+      true
+    end
+
+  end
+
 
 
   # Superclass of methods, aliases, constants, attributes, etc
@@ -310,7 +408,7 @@ module Billygen::CodeObjects
 
     def process(src)
       super
-      @name = src.name
+      @name = src.name if src.respond_to?(:name)
       @section_id = BSection.find_or_create(src.section).bid
       #@path = src.path
     end
