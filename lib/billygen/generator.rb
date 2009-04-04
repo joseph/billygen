@@ -3,7 +3,7 @@ require 'rdoc/rdoc'
 require 'yaml'
 
 
-class RDoc::Generator::BillyGen
+class RDoc::Generator::Billygen
 
   def self.for(options)
     new(options)
@@ -17,6 +17,7 @@ class RDoc::Generator::BillyGen
 
 
   def generate(top_levels)
+    reset
     top_levels.each { |tl| Billygen::CodeObjects::BFile.find_or_create(tl) }
     Billygen::RDocWorkarounds::postprocess
     @out = Billygen::Manifest.new(@options)
@@ -34,6 +35,12 @@ class RDoc::Generator::BillyGen
   # Meaningless required RDoc fluff.
   def class_dir # :nodoc:
     nil
+  end
+
+
+  # Clear all saved global data.
+  def reset
+    Billygen::CodeObjects::BCodeObject.complete_store = {}
   end
 
 end

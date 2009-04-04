@@ -57,9 +57,10 @@ module Billygen
       "--main=#{files.first}",
       "--output=#{output_dir}",
       "--format=billygen",
+      "--tab-width=2",
       "--line-numbers"
     ]
-    RDoc::RDoc.add_generator(RDoc::Generator::BillyGen)
+    RDoc::RDoc.add_generator(RDoc::Generator::Billygen)
     rdoc = RDoc::RDoc.new
     rdoc.document(args + files)
   end
