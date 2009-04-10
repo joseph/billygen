@@ -4,14 +4,14 @@ require 'fileutils'
 class BillygenGeneratorTest < Test::Unit::TestCase
 
   def setup
-    FileUtils.rm_rf 'doc'
+    FileUtils.rm_rf 'test/tmp'
   end
 
   def test_run
     require 'lib/billygen.rb'
-    files = ['README.md', 'HISTORY.md', 'lib/**/*.rb']
-    Billygen.run('Billygen', 'doc', files)
-    assert File.exists?('doc/rdocdump.yml')
+    files = ['test/data/suite1/README', 'test/data/suite1/lib/**/*.rb']
+    Billygen.run('Billygen', 'test/tmp', files)
+    assert File.exists?('test/tmp/rdocdump.yml')
   end
 
 end

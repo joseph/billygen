@@ -1,0 +1,1491 @@
+--- !ruby/object:Billygen::Manifest 
+data: 
+  modules: 
+  - !ruby/object:Billygen::CodeObjects::BModule 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: 
+    - 3
+    - 5
+    - 6
+    - 8
+    - 9
+    - 11
+    comment: &id001 |
+      # If you subclass an external class (say, Object or String), a stub 
+      # 'BExternalClass' should be created.
+      
+      # ---
+      # Including modules.
+      
+      # ---
+      # We're going to use this module as the namespace for most of the rest of
+      # the suite.
+      
+      # ---
+      # If we open a top-level module with the '::' prefix, it should be integrated
+      # into any other reference to that module without the '::' prefix.
+      
+      # ---
+      # And again by referencing an external class as superclass
+      
+      # ---
+      # Namespacing this test data to keep things neat.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      If you subclass an external class (say, Object or String), a stub
+      &#8216;BExternalClass&#8217; should be created.
+      </p>
+      <hr size="1"></hr><p>
+      Including modules.
+      </p>
+      <hr size="1"></hr><p>
+      We&#8217;re going to use this module as the namespace for most of the rest
+      of the suite.
+      </p>
+      <hr size="1"></hr><p>
+      If we open a top-level module with the &#8217;::&#8217; prefix, it should
+      be integrated into any other reference to that module without the
+      &#8217;::&#8217; prefix.
+      </p>
+      <hr size="1"></hr><p>
+      And again by referencing an external class as superclass
+      </p>
+      <hr size="1"></hr><p>
+      Namespacing this test data to keep things neat.
+      </p>
+
+    file_ids: 
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    id: 0
+    include_ids: []
+
+    method_ids: 
+    - 11
+    - 12
+    module_ids: 
+    - 1
+    name: Suite1
+    require_ids: []
+
+    section_id: 4
+    section_ids: 
+    - 4
+    slug_source: Suite1
+  - !ruby/object:Billygen::CodeObjects::BModule 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This module will be included in other classes in this test suite.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This module will be included in other classes in this test suite.
+      </p>
+
+    file_ids: 
+    - 3
+    id: 1
+    include_ids: []
+
+    method_ids: 
+    - 5
+    module_ids: []
+
+    name: IncludeableModule
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 10
+    section_ids: 
+    - 10
+    slug_source: Suite1::IncludeableModule
+  - !ruby/object:Billygen::CodeObjects::BModule 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: 
+    - 12
+    comment: &id002 |
+      # A module.
+      
+      # ---
+      # Reopening this module with a different comment (RDoc should append to first).
+
+    constant_ids: []
+
+    description: |
+      <p>
+      A module.
+      </p>
+      <hr size="1"></hr><p>
+      Reopening this module with a different comment (RDoc should append to
+      first).
+      </p>
+
+    file_ids: 
+    - 7
+    id: 2
+    include_ids: []
+
+    method_ids: 
+    - 10
+    module_ids: []
+
+    name: ASuite1Module
+    require_ids: []
+
+    section_id: 17
+    section_ids: 
+    - 17
+    slug_source: ASuite1Module
+  methods: 
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000000
+    comment: |
+      # A class method
+
+    description: |
+      <p>
+      A class method
+      </p>
+
+    id: 0
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/a_class.rb, line 5</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">klass_mthd</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;ASuite1Class.klass_mthd called.&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+    name: klass_mthd
+    params: ()
+    parent_collection: classes
+    parent_id: 0
+    section_id: 1
+    slug_source: ASuite1Class#klass_mthd
+    type: class
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000001
+    comment: |
+      # An instance method
+
+    description: |
+      <p>
+      An instance method
+      </p>
+
+    id: 1
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/a_class.rb, line 10</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inst_mthd</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;ASuite1Class#inst_mthd called.&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+    name: inst_mthd
+    params: ()
+    parent_collection: classes
+    parent_id: 0
+    section_id: 1
+    slug_source: ASuite1Class#inst_mthd
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000006
+    comment: |
+      # A file-level method.
+
+    description: |
+      <p>
+      A file-level method.
+      </p>
+
+    id: 2
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/main.rb, line 5</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">main</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Main called.&quot;</span>
+      <span class="ruby-keyword kw">end</span>
+    name: main
+    params: ()
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: main
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000007
+    comment: |
+      # A method that does a require when called.
+
+    description: |
+      <p>
+      A method that does a require when called.
+      </p>
+
+    id: 3
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/main.rb, line 18</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">require_all_files</span>
+        <span class="ruby-identifier">require</span> <span class="ruby-value str">'module_colon_colon_prefix'</span>
+        <span class="ruby-identifier">require</span> <span class="ruby-value str">'external_object_reference'</span>
+        <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-value str">'*.rb'</span>).<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">lib_loc</span><span class="ruby-operator">|</span> <span class="ruby-identifier">require</span> <span class="ruby-identifier">lib_loc</span> }
+      <span class="ruby-keyword kw">end</span>
+    name: require_all_files
+    params: ()
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: require_all_files
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000010
+    comment: |
+      # This method is declared in the prefixed reopening of Array.
+
+    description: |
+      <p>
+      This method is declared in the prefixed reopening of <a
+      href="Array.html">Array</a>.
+      </p>
+
+    id: 4
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/module_colon_colon_prefix.rb, line 26</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">three</span>
+        <span class="ruby-keyword kw">end</span>
+    name: three
+    params: ()
+    parent_collection: classes
+    parent_id: 2
+    section_id: 8
+    slug_source: Array#three
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000005
+    comment: 
+    description: ""
+    id: 5
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/includes.rb, line 15</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">foo</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;IncludeableModule.foo called.&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+    name: foo
+    params: ()
+    parent_collection: modules
+    parent_id: 1
+    section_id: 10
+    slug_source: Suite1::IncludeableModule#foo
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000012
+    comment: |
+      # So does the subclass.
+
+    description: |
+      <p>
+      So does the subclass.
+      </p>
+
+    id: 6
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/multiple_classes.rb, line 23</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">noop</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Subklass#noop called.&quot;</span>
+            <span class="ruby-keyword kw">super</span>
+          <span class="ruby-keyword kw">end</span>
+    name: noop
+    params: ()
+    parent_collection: classes
+    parent_id: 3
+    section_id: 11
+    slug_source: Suite1::Subklass#noop
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000003
+    comment: |
+      # This String subclass has a single additional method.
+
+    description: |
+      <p>
+      This String subclass has a single additional method.
+      </p>
+
+    id: 7
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/external_object_reference.rb, line 9</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">skoeknoop</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;SubklassOfExternalKlass#skoeknoop called.&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+    name: skoeknoop
+    params: ()
+    parent_collection: classes
+    parent_id: 6
+    section_id: 13
+    slug_source: Suite1::SubklassOfExternalKlass#skoeknoop
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000011
+    comment: |
+      # The superclass has a method that doesn't quite do nothing.
+
+    description: |
+      <p>
+      The superclass has a method that doesn&#8217;t quite do nothing.
+      </p>
+
+    id: 8
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/multiple_classes.rb, line 12</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">noop</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Superklass#noop called.&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+    name: noop
+    params: ()
+    parent_collection: classes
+    parent_id: 8
+    section_id: 14
+    slug_source: Suite1::Superklass#noop
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000004
+    comment: |
+      # Instance method within a module class
+
+    description: |
+      <p>
+      Instance method within a module class
+      </p>
+
+    id: 9
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/a_module.rb, line 17</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inst_mthd</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;ASuite1Module::ModuleKlass called.&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+    name: inst_mthd
+    params: ()
+    parent_collection: classes
+    parent_id: 12
+    section_id: 19
+    slug_source: ASuite1Module::ModuleKlass#inst_mthd
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000002
+    comment: |
+      # A module method
+
+    description: |
+      <p>
+      A module method
+      </p>
+
+    id: 10
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/a_module.rb, line 5</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">module_mthd</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;ASuite1Module::module_method called.&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+    name: module_mthd
+    params: ()
+    parent_collection: modules
+    parent_id: 2
+    section_id: 17
+    slug_source: ASuite1Module#module_mthd
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000008
+    comment: |
+      # This method is declared in the unprefixed module.
+
+    description: |
+      <p>
+      This method is declared in the unprefixed module.
+      </p>
+
+    id: 11
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/module_colon_colon_prefix.rb, line 7</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">one</span>
+        <span class="ruby-keyword kw">end</span>
+    name: one
+    params: ()
+    parent_collection: modules
+    parent_id: 0
+    section_id: 4
+    slug_source: Suite1#one
+    type: instance
+  - !ruby/object:Billygen::CodeObjects::BMethod 
+    alias_ids: []
+
+    aref: M000009
+    comment: |
+      # This method is declared in the prefixed module.
+
+    description: |
+      <p>
+      This method is declared in the prefixed module.
+      </p>
+
+    id: 12
+    markup_code: |-
+      <span class="ruby-comment cmt"># File test/data/suite1/lib/module_colon_colon_prefix.rb, line 15</span>
+        <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">two</span>
+        <span class="ruby-keyword kw">end</span>
+    name: two
+    params: ()
+    parent_collection: modules
+    parent_id: 0
+    section_id: 4
+    slug_source: Suite1#two
+    type: instance
+  files: 
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/a_class.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: 
+    - 0
+    comment: |
+      # A simple class
+
+    constant_ids: []
+
+    description: |
+      <p>
+      A simple class
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/a_class.rb
+    id: 0
+    include_ids: []
+
+    last_modified: Fri Apr 10 16:59:10 +1000 2009
+    method_ids: []
+
+    module_ids: []
+
+    name: a_class.rb
+    require_ids: []
+
+    section_id: 0
+    section_ids: 
+    - 0
+    slug_source: a_class.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/README
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      TEST LIBRARY SUITE1
+      
+      This is the README file for the Billygen 'Suite1' test library.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      TEST LIBRARY SUITE1
+      </p>
+      <p>
+      This is the README file for the Billygen &#8216;Suite1&#8217; test library.
+      </p>
+
+    file_ids: []
+
+    format: text
+    full_name: test/data/suite1/README
+    id: 1
+    include_ids: []
+
+    last_modified: Fri Apr 10 16:17:30 +1000 2009
+    method_ids: []
+
+    module_ids: []
+
+    name: README
+    require_ids: []
+
+    section_id: 2
+    section_ids: 
+    - 2
+    slug_source: README
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/external_object_reference.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: *id001
+    constant_ids: []
+
+    description: |
+      <p>
+      If you subclass an external class (say, Object or String), a stub
+      &#8216;BExternalClass&#8217; should be created.
+      </p>
+      <hr size="1"></hr><p>
+      Including modules.
+      </p>
+      <hr size="1"></hr><p>
+      We&#8217;re going to use this module as the namespace for most of the rest
+      of the suite.
+      </p>
+      <hr size="1"></hr><p>
+      If we open a top-level module with the &#8217;::&#8217; prefix, it should
+      be integrated into any other reference to that module without the
+      &#8217;::&#8217; prefix.
+      </p>
+      <hr size="1"></hr><p>
+      And again by referencing an external class as superclass
+      </p>
+      <hr size="1"></hr><p>
+      Namespacing this test data to keep things neat.
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/external_object_reference.rb
+    id: 2
+    include_ids: []
+
+    last_modified: Fri Apr 10 17:01:03 +1000 2009
+    method_ids: []
+
+    module_ids: 
+    - 0
+    name: external_object_reference.rb
+    require_ids: []
+
+    section_id: 3
+    section_ids: 
+    - 3
+    slug_source: external_object_reference.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/includes.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # Including modules.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      Including modules.
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/includes.rb
+    id: 3
+    include_ids: []
+
+    last_modified: Fri Apr 10 17:10:39 +1000 2009
+    method_ids: []
+
+    module_ids: 
+    - 0
+    name: includes.rb
+    require_ids: []
+
+    section_id: 5
+    section_ids: 
+    - 5
+    slug_source: includes.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/main.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # A file-level comment that should serve as it's description.
+
+    constant_ids: 
+    - 0
+    - 1
+    description: |
+      <p>
+      A file-level comment that should serve as it&#8217;s description.
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/main.rb
+    id: 4
+    include_ids: []
+
+    last_modified: Fri Apr 10 17:02:22 +1000 2009
+    method_ids: 
+    - 2
+    - 3
+    module_ids: 
+    - 0
+    name: main.rb
+    require_ids: 
+    - 0
+    - 1
+    - 2
+    - 3
+    section_id: 6
+    section_ids: 
+    - 6
+    slug_source: main.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/module_colon_colon_prefix.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: 
+    - 2
+    comment: |
+      # If we open a top-level module with the '::' prefix, it should be integrated
+      # into any other reference to that module without the '::' prefix.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      If we open a top-level module with the &#8217;::&#8217; prefix, it should
+      be integrated into any other reference to that module without the
+      &#8217;::&#8217; prefix.
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/module_colon_colon_prefix.rb
+    id: 5
+    include_ids: []
+
+    last_modified: Fri Apr 10 17:07:37 +1000 2009
+    method_ids: []
+
+    module_ids: 
+    - 0
+    name: module_colon_colon_prefix.rb
+    require_ids: []
+
+    section_id: 7
+    section_ids: 
+    - 7
+    slug_source: module_colon_colon_prefix.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/multiple_classes.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # Class inheritance. RDoc (at least at 2.4.1) has a bug where if a superclass
+      # and subclass are defined in the same file, they're not associated, so 
+      # Billygen does it in post-processing.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      Class inheritance. RDoc (at least at 2.4.1) has a bug where if a superclass
+      and subclass are defined in the same file, they&#8217;re not associated, so
+      Billygen does it in post-processing.
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/multiple_classes.rb
+    id: 6
+    include_ids: []
+
+    last_modified: Fri Apr 10 16:41:03 +1000 2009
+    method_ids: []
+
+    module_ids: 
+    - 0
+    name: multiple_classes.rb
+    require_ids: []
+
+    section_id: 9
+    section_ids: 
+    - 9
+    slug_source: multiple_classes.rb
+  - !ruby/object:Billygen::CodeObjects::BFile 
+    absolute_name: test/data/suite1/lib/a_module.rb
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: *id002
+    constant_ids: []
+
+    description: |
+      <p>
+      A module.
+      </p>
+      <hr size="1"></hr><p>
+      Reopening this module with a different comment (RDoc should append to
+      first).
+      </p>
+
+    file_ids: []
+
+    format: ruby
+    full_name: test/data/suite1/lib/a_module.rb
+    id: 7
+    include_ids: []
+
+    last_modified: Fri Apr 10 17:05:39 +1000 2009
+    method_ids: []
+
+    module_ids: 
+    - 2
+    name: a_module.rb
+    require_ids: []
+
+    section_id: 18
+    section_ids: 
+    - 18
+    slug_source: a_module.rb
+  requires: 
+  - !ruby/object:Billygen::CodeObjects::BRequire 
+    comment: |
+      # A file-level require.
+
+    id: 0
+    name: a_class
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: a_class
+  - !ruby/object:Billygen::CodeObjects::BRequire 
+    comment: 
+    id: 1
+    name: a_module
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: a_module
+  - !ruby/object:Billygen::CodeObjects::BRequire 
+    comment: 
+    id: 2
+    name: module_colon_colon_prefix
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: module_colon_colon_prefix
+  - !ruby/object:Billygen::CodeObjects::BRequire 
+    comment: 
+    id: 3
+    name: external_object_reference
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: external_object_reference
+  sections: 
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 0
+    parent_collection: files
+    parent_id: 0
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 1
+    parent_collection: classes
+    parent_id: 0
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 2
+    parent_collection: files
+    parent_id: 1
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 3
+    parent_collection: files
+    parent_id: 2
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 4
+    parent_collection: modules
+    parent_id: 0
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 5
+    parent_collection: files
+    parent_id: 3
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 6
+    parent_collection: files
+    parent_id: 4
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 7
+    parent_collection: files
+    parent_id: 5
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 8
+    parent_collection: classes
+    parent_id: 2
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 9
+    parent_collection: files
+    parent_id: 6
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 10
+    parent_collection: modules
+    parent_id: 1
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 11
+    parent_collection: classes
+    parent_id: 3
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 12
+    parent_collection: classes
+    parent_id: 5
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 13
+    parent_collection: classes
+    parent_id: 6
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 14
+    parent_collection: classes
+    parent_id: 8
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 15
+    parent_collection: classes
+    parent_id: 9
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 16
+    parent_collection: classes
+    parent_id: 11
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 17
+    parent_collection: modules
+    parent_id: 2
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 18
+    parent_collection: files
+    parent_id: 7
+  - !ruby/object:Billygen::CodeObjects::BSection 
+    comment: 
+    description: ""
+    id: 19
+    parent_collection: classes
+    parent_id: 12
+  includes: 
+  - !ruby/object:Billygen::CodeObjects::BInclude 
+    comment: |
+      # The actual include.
+
+    id: 0
+    module_id: Enumerable
+    name: Enumerable
+    parent_collection: classes
+    parent_id: 5
+    section_id: 12
+    slug_source: Suite1::HasExternalInclude#Enumerable
+  - !ruby/object:Billygen::CodeObjects::BInclude 
+    comment: |
+      # It looks like this module include will not resolve to an RDocCodeObject,
+      # though it should.
+
+    id: 1
+    module_id: IncludeableModule
+    name: IncludeableModule
+    parent_collection: classes
+    parent_id: 11
+    section_id: 16
+    slug_source: Suite1::HasInternalInclude#IncludeableModule
+  - !ruby/object:Billygen::CodeObjects::BInclude 
+    comment: |
+      # I think this module include, functionally equivalent, will resolve 
+      # correctly.
+
+    id: 2
+    module_id: 1
+    name: Suite1::IncludeableModule
+    parent_collection: classes
+    parent_id: 11
+    section_id: 16
+    slug_source: Suite1::HasInternalInclude#Suite1::IncludeableModule
+  attributes: 
+  - !ruby/object:Billygen::CodeObjects::BAttribute 
+    comment: |
+      # An attribute accessor
+
+    description: |
+      <p>
+      An attribute accessor
+      </p>
+
+    id: 0
+    name: foo
+    parent_collection: classes
+    parent_id: 12
+    rw: RW
+    section_id: 19
+    slug_source: ASuite1Module::ModuleKlass#foo
+  - !ruby/object:Billygen::CodeObjects::BAttribute 
+    comment: 
+    description: ""
+    id: 1
+    name: bar
+    parent_collection: classes
+    parent_id: 12
+    rw: R
+    section_id: 19
+    slug_source: ASuite1Module::ModuleKlass#bar
+  classes: 
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # A simple class
+
+    constant_ids: []
+
+    description: |
+      <p>
+      A simple class
+      </p>
+
+    file_ids: 
+    - 0
+    id: 0
+    include_ids: []
+
+    method_ids: 
+    - 0
+    - 1
+    module_ids: []
+
+    name: ASuite1Class
+    parent_collection: files
+    parent_id: 0
+    require_ids: []
+
+    section_id: 1
+    section_ids: 
+    - 1
+    slug_source: ASuite1Class
+    superclass_id: 1
+  - !ruby/object:Billygen::CodeObjects::BExternalClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    constant_ids: []
+
+    file_ids: []
+
+    id: 1
+    include_ids: []
+
+    method_ids: []
+
+    module_ids: []
+
+    name: Object
+    require_ids: []
+
+    section_ids: []
+
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # Try it again with an external class/module.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      Try it again with an external class/module.
+      </p>
+
+    file_ids: 
+    - 5
+    id: 2
+    include_ids: []
+
+    method_ids: 
+    - 4
+    module_ids: []
+
+    name: Array
+    parent_collection: files
+    parent_id: 5
+    require_ids: []
+
+    section_id: 8
+    section_ids: 
+    - 8
+    slug_source: Array
+    superclass_id: 1
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This is the subclass.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This is the subclass.
+      </p>
+
+    file_ids: 
+    - 6
+    id: 3
+    include_ids: []
+
+    method_ids: 
+    - 6
+    module_ids: []
+
+    name: Subklass
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 11
+    section_ids: 
+    - 11
+    slug_source: Suite1::Subklass
+    superclass_id: 8
+  - !ruby/object:Billygen::CodeObjects::BExternalClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    constant_ids: []
+
+    file_ids: []
+
+    id: 4
+    include_ids: []
+
+    method_ids: []
+
+    module_ids: []
+
+    name: Superklass
+    require_ids: []
+
+    section_ids: []
+
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This class includes an external module (one not defined in this test suite).
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This class includes an external module (one not defined in this test
+      suite).
+      </p>
+
+    file_ids: 
+    - 3
+    id: 5
+    include_ids: 
+    - 0
+    method_ids: []
+
+    module_ids: []
+
+    name: HasExternalInclude
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 12
+    section_ids: 
+    - 12
+    slug_source: Suite1::HasExternalInclude
+    superclass_id: 1
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This class subclasses an external class (one not defined in this test suite)
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This class subclasses an external class (one not defined in this test
+      suite)
+      </p>
+
+    file_ids: 
+    - 2
+    id: 6
+    include_ids: []
+
+    method_ids: 
+    - 7
+    module_ids: []
+
+    name: SubklassOfExternalKlass
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 13
+    section_ids: 
+    - 13
+    slug_source: Suite1::SubklassOfExternalKlass
+    superclass_id: 7
+  - !ruby/object:Billygen::CodeObjects::BExternalClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    constant_ids: []
+
+    file_ids: []
+
+    id: 7
+    include_ids: []
+
+    method_ids: []
+
+    module_ids: []
+
+    name: String
+    require_ids: []
+
+    section_ids: []
+
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This is the superclass.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This is the superclass.
+      </p>
+
+    file_ids: 
+    - 6
+    id: 8
+    include_ids: []
+
+    method_ids: 
+    - 8
+    module_ids: []
+
+    name: Superklass
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 14
+    section_ids: 
+    - 14
+    slug_source: Suite1::Superklass
+    superclass_id: 1
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: ""
+    constant_ids: []
+
+    description: ""
+    file_ids: 
+    - 5
+    id: 9
+    include_ids: []
+
+    method_ids: []
+
+    module_ids: []
+
+    name: ABetterHash
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 15
+    section_ids: 
+    - 15
+    slug_source: Suite1::ABetterHash
+    superclass_id: 10
+  - !ruby/object:Billygen::CodeObjects::BExternalClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    constant_ids: []
+
+    file_ids: []
+
+    id: 10
+    include_ids: []
+
+    method_ids: []
+
+    module_ids: []
+
+    name: "::Hash"
+    require_ids: []
+
+    section_ids: []
+
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: []
+
+    class_ids: []
+
+    comment: |
+      # This class includes an internal module (one defined elsewhere in this suite)
+
+    constant_ids: []
+
+    description: |
+      <p>
+      This class includes an internal module (one defined elsewhere in this
+      suite)
+      </p>
+
+    file_ids: 
+    - 3
+    id: 11
+    include_ids: 
+    - 1
+    - 2
+    method_ids: []
+
+    module_ids: []
+
+    name: HasInternalInclude
+    parent_collection: modules
+    parent_id: 0
+    require_ids: []
+
+    section_id: 16
+    section_ids: 
+    - 16
+    slug_source: Suite1::HasInternalInclude
+    superclass_id: 1
+  - !ruby/object:Billygen::CodeObjects::BClass 
+    alias_ids: []
+
+    attribute_ids: 
+    - 0
+    - 1
+    class_ids: []
+
+    comment: |
+      # A class within a module.
+
+    constant_ids: []
+
+    description: |
+      <p>
+      A class within a module.
+      </p>
+
+    file_ids: 
+    - 7
+    id: 12
+    include_ids: []
+
+    method_ids: 
+    - 9
+    module_ids: []
+
+    name: ModuleKlass
+    parent_collection: modules
+    parent_id: 2
+    require_ids: []
+
+    section_id: 19
+    section_ids: 
+    - 19
+    slug_source: ASuite1Module::ModuleKlass
+    superclass_id: 1
+  constants: 
+  - !ruby/object:Billygen::CodeObjects::BConstant 
+    comment: |
+      # A couple of constants
+
+    description: |
+      <p>
+      A couple of constants
+      </p>
+
+    id: 0
+    name: MAIN_CONSTANT_1
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: MAIN_CONSTANT_1
+    value: "\"main_constant_1\".freeze"
+  - !ruby/object:Billygen::CodeObjects::BConstant 
+    comment: 
+    description: ""
+    id: 1
+    name: MAIN_CONSTANT_2
+    parent_collection: files
+    parent_id: 4
+    section_id: 6
+    slug_source: MAIN_CONSTANT_2
+    value: "%w[main constant 1].collect { |str| str.freeze }"
+rdoc_options: 
+  :files: 
+  - test/data/suite1/README
+  - test/data/suite1/lib/a_class.rb
+  - test/data/suite1/lib/a_module.rb
+  - test/data/suite1/lib/external_object_reference.rb
+  - test/data/suite1/lib/includes.rb
+  - test/data/suite1/lib/main.rb
+  - test/data/suite1/lib/module_colon_colon_prefix.rb
+  - test/data/suite1/lib/multiple_classes.rb
+  :line_numbers: false
+  :main_file_id: 1
+  :charset: utf-8
+  :title: Billygen
+  :version: 0.0.1
+  :tab_width: 2
