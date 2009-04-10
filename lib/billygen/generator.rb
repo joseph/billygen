@@ -13,6 +13,7 @@ class RDoc::Generator::Billygen
   def initialize(options)
     @options = options
     @options.diagram = false
+    Billygen::RDocWorkarounds::apply_monkey_patches
   end
 
 

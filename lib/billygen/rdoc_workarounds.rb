@@ -13,8 +13,8 @@ module Billygen
     # We'll add a few attributes to RDoc CodeObjects, so that we can keep track
     # of them as we generate the output.
     def self.apply_monkey_patches
-      [RDoc::CodeObject, RDoc::Context::Section].each.class_eval { 
-        include Billygen::RDocObjectAttributes 
+      [RDoc::CodeObject, RDoc::Context::Section].each { |klass|
+        klass.class_eval { include Billygen::RDocObjectAttributes }
       }
     end
 
