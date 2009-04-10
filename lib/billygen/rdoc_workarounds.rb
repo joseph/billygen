@@ -1,6 +1,23 @@
 module Billygen
 
+  # Attributes that RDoc native objects will need so we know we've touched them.
+  module RDocObjectAttributes
+
+    attr_accessor :billy_id, :billy_object
+
+  end
+
+
   class RDocWorkarounds
+
+    # We'll add a few attributes to RDoc CodeObjects, so that we can keep track
+    # of them as we generate the output.
+    def self.apply_monkey_patches
+      [RDoc::CodeObject, RDoc::Context::Section].each.class_eval { 
+        include Billygen::RDocObjectAttributes 
+      }
+    end
+
 
     # Assorted cleanups that happen after the RDoc data has been hashed up,
     # and before it is saved to YAML.
@@ -25,7 +42,7 @@ module Billygen
           obj.classes.include?(orphan) 
         }
         if parent
-          orphan.instance_variable_set(:@parent_id, parent.bid)
+          orphan.instance_variable_set(:@parent_id, parent.id)
           orphan.instance_variable_set(:@parent_collection, parent.class.key)
           puts "Associated #{orphan.long_name} with parent #{parent.long_name}"
         end
@@ -58,7 +75,7 @@ module Billygen
         puts "Replacement found: #{klass.name} -> #{rep_klass.name}"
 
         klass.subclasses.each { |sub|
-          sub.instance_variable_set(:@superclass_id, rep_klass.bid)
+          sub.instance_variable_set(:@superclass_id, rep_klass.id)
         }
       }
     end
@@ -78,7 +95,7 @@ module Billygen
         next if inc.module.is_a?(String)
         if inc.module.long_name != inc.name
           mod = all_modules.find {|mod| mod.long_name == inc.name}
-          inc.instance_variable_set(:@module_id, mod ? mod.bid : inc.name)
+          inc.instance_variable_set(:@module_id, mod ? mod.id : inc.name)
         end
       }
     end

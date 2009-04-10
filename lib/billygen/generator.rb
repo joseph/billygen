@@ -1,4 +1,4 @@
-gem 'rdoc', '>= 2.0.0'
+gem 'rdoc', '>= 2.4.0'
 require 'rdoc/rdoc'
 require 'yaml'
 
@@ -26,6 +26,12 @@ class RDoc::Generator::Billygen
   end
 
 
+  # Clear all saved global data.
+  def reset
+    Billygen::CodeObjects::BCodeObject.complete_store = {}
+  end
+
+
   # Meaningless required RDoc fluff.
   def file_dir # :nodoc:
     nil
@@ -36,25 +42,5 @@ class RDoc::Generator::Billygen
   def class_dir # :nodoc:
     nil
   end
-
-
-  # Clear all saved global data.
-  def reset
-    Billygen::CodeObjects::BCodeObject.complete_store = {}
-  end
-
-end
-
-
-class RDoc::CodeObject
-
-  attr_accessor :bid, :billy_object
-
-end
-
-
-class RDoc::Context::Section
-
-  attr_accessor :bid, :billy_object
 
 end

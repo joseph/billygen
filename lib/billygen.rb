@@ -46,7 +46,6 @@ module Billygen
   end
 
 
-
   # A simple runner that sets up defaults for rdoc generation with billygen.
   # The main file should be the first item in the files list.
   # Files can include glob patterns.
@@ -57,8 +56,7 @@ module Billygen
       "--main=#{files.first}",
       "--output=#{output_dir}",
       "--format=billygen",
-      "--tab-width=2",
-      "--line-numbers"
+      "--tab-width=2"
     ]
     RDoc::RDoc.add_generator(RDoc::Generator::Billygen)
     rdoc = RDoc::RDoc.new

@@ -6,19 +6,29 @@ class Billygen::Manifest
   def initialize(options)
     @rdoc_options = {
       :title => options.title,
-      :main_page => options.main_page,
       :files => options.files,
       :line_numbers => options.include_line_numbers,
       :charset => options.charset,
       :tab_width => options.tab_width,
       :version => Billygen::VERSION
     }
+
+    file = Billygen::CodeObjects::BFile.store.find {|fi|
+      fi.full_name == options.main_page
+    } || Billygen::CodeObjects::BFile.store.first
+    @rdoc_options[:main_file_id] = file.id
+
     @data = Billygen::CodeObjects::BCodeObject.complete_store
   end
 
 
   def restore
     Billygen::CodeObjects::BCodeObject.complete_store = @data
+  end
+
+
+  def main_file
+    data['files'][@rdoc_options[:main_file_id]]
   end
 
 

@@ -4,7 +4,7 @@ module Billygen::CodeObjects
   # to a method to a 'require' statement & etc.
   class BCodeObject
 
-    attr_accessor :bid
+    attr_accessor :id
     attr_reader :comment, :description
 
 
@@ -19,6 +19,8 @@ module Billygen::CodeObjects
     end
 
 
+    # I'm just going to reference store here, and process and store_by_slug
+    # for good measure.
     def self.store
       complete_store[key] ||= []
     end
@@ -31,14 +33,14 @@ module Billygen::CodeObjects
 
     def self.find_or_create(rdoc_code_object)
       result = nil
-      if i = rdoc_code_object.bid
+      if i = rdoc_code_object.billy_id
         result = self.store[i]
       else
         result = self.new
         self.store << result
         i = self.store.index(result)
-        result.bid = i
-        rdoc_code_object.bid = i
+        result.id = i
+        rdoc_code_object.billy_id = i
         rdoc_code_object.billy_object = result
         result.process(rdoc_code_object)
       end
@@ -56,20 +58,20 @@ module Billygen::CodeObjects
       @comment = src.comment
       @description = src.description if src.respond_to?(:description)
       if src.parent && src.parent.billy_object
-        @parent_id = src.parent.bid
+        @parent_id = src.parent.billy_id
         @parent_collection = src.parent.billy_object.class.key
       end
     end
 
 
-    def bids(klass, arr)
-      arr.collect {|obj| klass.find_or_create(obj)}.collect {|obj| obj.bid}
+    def ids(klass, arr)
+      arr.collect { |obj| klass.find_or_create(obj) }.collect { |obj| obj.id }
     end
 
 
     def parent
       return nil unless @parent_id && @parent_collection
-      return nil if @parent_id == bid && @parent_collection == self.class.key
+      return nil if @parent_id == id && @parent_collection == self.class.key
       return nil if @parent_collection == "files"
       self.class.complete_store[@parent_collection][@parent_id]
     end
@@ -105,18 +107,18 @@ module Billygen::CodeObjects
     def process(src)
       super
       @name = src.name
-      @section_id = BSection.find_or_create(src.current_section).bid
+      @section_id = BSection.find_or_create(src.current_section).id
 
-      @file_ids = bids(BFile, src.in_files)
-      @section_ids = bids(BSection, src.sections)
-      @module_ids = bids(BModule, src.modules)
-      @class_ids = bids(BClass, src.classes)
-      @method_ids = bids(BMethod, src.method_list)
-      @attribute_ids = bids(BAttribute, src.attributes)
-      @alias_ids = bids(BAlias, src.aliases)
-      @constant_ids = bids(BConstant, src.constants)
-      @include_ids = bids(BInclude, src.includes)
-      @require_ids = bids(BRequire, src.requires)
+      @file_ids = ids(BFile, src.in_files)
+      @section_ids = ids(BSection, src.sections)
+      @module_ids = ids(BModule, src.modules)
+      @class_ids = ids(BClass, src.classes)
+      @method_ids = ids(BMethod, src.method_list)
+      @attribute_ids = ids(BAttribute, src.attributes)
+      @alias_ids = ids(BAlias, src.aliases)
+      @constant_ids = ids(BConstant, src.constants)
+      @include_ids = ids(BInclude, src.includes)
+      @require_ids = ids(BRequire, src.requires)
 
       @slug_source = long_name
     end
@@ -125,6 +127,10 @@ module Billygen::CodeObjects
     # If this module or class is within another module/class, returns that name.
     def namespace
       parent && !parent.is_a?(BFile) ? parent.long_name : nil
+    end
+
+    def namespaces
+      parent && !parent.is_a?(BFile) ? parent.namespaces + [name] : [name]
     end
 
 
@@ -338,14 +344,14 @@ module Billygen::CodeObjects
       super
       if src.superclass
         factory = src.superclass.is_a?(String) ? BExternalClass : BClass
-        @superclass_id = factory.find_or_create(src.superclass).bid
+        @superclass_id = factory.find_or_create(src.superclass).id
       end
     end
 
 
     def superclass
       return nil unless @superclass_id
-      return nil if @superclass_id == bid
+      return nil if @superclass_id == id
       self.class.store[@superclass_id]
     end
 
@@ -378,7 +384,7 @@ module Billygen::CodeObjects
         result = self.new
         self.store << result
         i = self.store.index(result)
-        result.bid = i
+        result.id = i
         result.process(str)
       end
       result
@@ -422,7 +428,7 @@ module Billygen::CodeObjects
     def process(src)
       super
       @name = src.name if src.respond_to?(:name)
-      @section_id = BSection.find_or_create(src.section).bid
+      @section_id = BSection.find_or_create(src.section).id
       #@path = src.path
 
       @slug_source = long_name
@@ -444,7 +450,7 @@ module Billygen::CodeObjects
   # METHOD
   class BMethod < BUnit
 
-    attr_reader :type, :params, :call_seq, :markup_code
+    attr_reader :type, :params, :call_seq, :markup_code, :aref
 
     def self.key
       'methods'
@@ -459,7 +465,8 @@ module Billygen::CodeObjects
         @call_seq = src.call_seq.strip.gsub(/->/,'&rarr;').gsub(/^\w.*?\./m, '')
       end
       @markup_code = src.markup_code
-      @alias_ids = bids(BMethod, src.aliases)
+      @alias_ids = ids(BMethod, src.aliases)
+      @aref = src.aref
       # FIXME: block_params, is_alias_for, singleton
     end
 
@@ -557,7 +564,7 @@ module Billygen::CodeObjects
       super
       if src.module
         if src.module.kind_of?(RDoc::CodeObject)
-          @module_id = BModule.find_or_create(src.module).bid
+          @module_id = BModule.find_or_create(src.module).id
         else
           @module_id = src.module.to_s
         end
