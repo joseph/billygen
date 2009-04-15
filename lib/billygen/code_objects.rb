@@ -19,15 +19,8 @@ module Billygen::CodeObjects
     end
 
 
-    # I'm just going to reference store here, and process and store_by_slug
-    # for good measure.
     def self.store
       complete_store[key] ||= []
-    end
-
-
-    def self.store_by_slug(slug)
-      store.find {|x| x.respond_to?(:slug) && x.slug == slug }
     end
 
 
@@ -76,12 +69,6 @@ module Billygen::CodeObjects
       self.class.complete_store[@parent_collection][@parent_id]
     end
 
-
-    def slug
-      return nil unless @slug_source
-      @slug_source.downcase.gsub(/[\W_]+/, '-')
-    end
-
   end
 
 
@@ -119,24 +106,6 @@ module Billygen::CodeObjects
       @constant_ids = ids(BConstant, src.constants)
       @include_ids = ids(BInclude, src.includes)
       @require_ids = ids(BRequire, src.requires)
-
-      @slug_source = long_name
-    end
-
-
-    # If this module or class is within another module/class, returns that name.
-    def namespace
-      parent && !parent.is_a?(BFile) ? parent.long_name : nil
-    end
-
-    def namespaces
-      parent && !parent.is_a?(BFile) ? parent.namespaces + [name] : [name]
-    end
-
-
-    # The fully-qualified name of this module or class.
-    def long_name
-      namespace ? "#{namespace}::#{name}" : name
     end
 
 
@@ -171,12 +140,14 @@ module Billygen::CodeObjects
 
 
     # The methods defined in this context.
+    # FIXME: I don't think we should override this...
     def methods
       @method_ids.collect { |idx| BMethod.store[idx] }
     end
 
 
     # If this context is a class, the attributes of this class.
+    # FIXME: or this...
     def attributes
       @attribute_ids.collect { |idx| BAttribute.store[idx] }
     end
@@ -203,6 +174,11 @@ module Billygen::CodeObjects
     # Source files for which a 'require' statement is found in this context.
     def requires
       @require_ids.collect { |idx| BRequire.store[idx] }
+    end
+
+
+    def full_name
+      @full_name ||= (parent ? "#{parent.full_name}::#{name}" : name)
     end
 
   end
@@ -237,44 +213,6 @@ module Billygen::CodeObjects
       @last_modified = src.last_modified
       @absolute_name = src.absolute_name
       @full_name = src.full_name
-    end
-
-
-    # Outputter returns information on the renderer that should be used to 
-    # transform the comment into HTML. If the result is +:rdoc+, then 
-    # the file's +description+ should be used. Otherwise, operate directly
-    # on the comment.
-    #
-    # If the file is a source file (ie, contains active code), this always 
-    # returns +:rdoc+.
-    #
-    # The formats here should mirror Github's detection of README formats.
-    # However, formats treated by Github as 'no formatting' are here considered
-    # to be +:rdoc+.
-    # See: http://github.com/guides/readme-formatting
-    #
-    # Currently, the possible outputter values are:
-    # - +:rdoc+
-    # - +:markdown+
-    # - +:textile+
-    # - +:png+
-    # - +:restructured_text+
-    #
-    def outputter
-      return @outputter ||= :rdoc unless format == 'text'
-
-      @outputter ||= case File.extname(full_name)
-        when '.textile'
-          :textile
-        when '.png'
-          :png
-        when '.rst'
-          :restructured_text
-        when *['.md', '.markdown', '.mdown', '.mkd', '.mkdn']
-          :markdown
-        else
-          :rdoc
-      end
     end
 
 
@@ -365,11 +303,6 @@ module Billygen::CodeObjects
       false
     end
 
-
-    def top_level?
-      !superclass
-    end
-
   end
 
   # RDoc gives a string if a superclass object isn't found in the source.
@@ -430,18 +363,11 @@ module Billygen::CodeObjects
       @name = src.name if src.respond_to?(:name)
       @section_id = BSection.find_or_create(src.section).id
       #@path = src.path
-
-      @slug_source = long_name
     end
 
 
     def section
       BSection.store[@section_id]
-    end
-
-
-    def long_name
-      parent ? "#{parent.long_name}##{name}" : name
     end
 
   end
@@ -475,17 +401,6 @@ module Billygen::CodeObjects
       @alias_ids.collect {|idx| BMethod.store[idx]}
     end
 
-
-    def signature
-      (type == "class" ? "self." : "") + name + params
-    end
-
-
-    def long_name
-      divider = (type == "class" ? "." : "#")
-      parent ? "#{parent.long_name}#{divider}#{name}" : name
-    end
-
   end
 
   
@@ -504,11 +419,6 @@ module Billygen::CodeObjects
       super
       @aliased_name = src.new_name
       @aliasee_name = src.old_name
-    end
-
-
-    def long_name
-      parent ? "#{parent.long_name}##{aliased_name}" : aliased_name
     end
 
   end

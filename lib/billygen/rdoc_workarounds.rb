@@ -25,6 +25,7 @@ module Billygen
       repair_parents
       repair_superclasses
       repair_included_modules
+      generate_full_names
     end
 
 
@@ -44,7 +45,7 @@ module Billygen
         if parent
           orphan.instance_variable_set(:@parent_id, parent.id)
           orphan.instance_variable_set(:@parent_collection, parent.class.key)
-          puts "Associated #{orphan.long_name} with parent #{parent.long_name}"
+          puts "Associated #{orphan.full_name} with parent #{parent.full_name}"
         end
       }
     end
@@ -93,11 +94,17 @@ module Billygen
 
       all_includes.each { |inc|
         next if inc.module.is_a?(String)
-        if inc.module.long_name != inc.name
-          mod = all_modules.find {|mod| mod.long_name == inc.name}
+        if inc.module.full_name != inc.name
+          mod = all_modules.find {|mod| mod.full_name == inc.name}
           inc.instance_variable_set(:@module_id, mod ? mod.id : inc.name)
         end
       }
+    end
+
+    def self.generate_full_names
+      all_modules = Billygen::CodeObjects::BModule.store
+      all_classes = Billygen::CodeObjects::BClass.store
+      (all_modules + all_classes).each { |obj| obj.full_name }
     end
 
   end
